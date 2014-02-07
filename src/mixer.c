@@ -296,8 +296,8 @@ void writeServos(void)
             pwmWriteServo(2, servo[5]);
             pwmWriteServo(3, servo[6]);
             break;
-            
-            
+
+
 
         default:
             // Two servos for SERVO_TILT, if enabled
@@ -434,7 +434,7 @@ void mixTable(void)
         case MULTITYPE_VTAILPLANE:
             airplaneMixer();
             break;
-            
+
         case MULTITYPE_FLYING_WING:
             if (!f.ARMED)
                 servo[7] = mcfg.mincommand;
