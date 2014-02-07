@@ -362,7 +362,7 @@ static void airplaneMixer(void)
         servo[2] += mcfg.midrc;
     }
 
-if (mcfg.mixerConfiguration == MULTITYPE_AIRPLANE) {
+    if (mcfg.mixerConfiguration == MULTITYPE_AIRPLANE) {
     if (f.PASSTHRU_MODE) {   // Direct passthru from RX
         servo[3] = rcCommand[ROLL] + flapperons[0];     // Wing 1
         servo[4] = rcCommand[ROLL] + flapperons[1];     // Wing 2
