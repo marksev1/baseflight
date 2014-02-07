@@ -297,8 +297,6 @@ void writeServos(void)
             pwmWriteServo(3, servo[6]);
             break;
 
-
-
         default:
             // Two servos for SERVO_TILT, if enabled
             if (feature(FEATURE_SERVO_TILT)) {
@@ -381,14 +379,14 @@ if (mcfg.mixerConfiguration == MULTITYPE_AIRPLANE) {
     if (f.PASSTHRU_MODE) {   // Direct passthru from RX, for vtailplane
         servo[3] = rcCommand[ROLL] + flapperons[0];     // Wing 1
         servo[4] = rcCommand[ROLL] + flapperons[1];     // Wing 2
-        servo[5] = (servoDirection(5, 1) * rcCommand[PITCH]) + (servoDirection(5, 2) * rcCommand[YAW]);   // Rudder
-        servo[6] = (servoDirection(6, 1) * rcCommand[PITCH]) + (servoDirection(6, 2) * rcCommand[YAW]);   // Elevator
+        servo[5] = (servoDirection(5, 1) * rcCommand[PITCH]) + (servoDirection(5, 2) * rcCommand[YAW]);   // Ruddervators
+        servo[6] = (servoDirection(6, 1) * rcCommand[PITCH]) + (servoDirection(6, 2) * rcCommand[YAW]);   // Ruddervators
     } else {
         // Assisted modes (gyro only or gyro+acc according to AUX configuration in Gui, for vtailplane
         servo[3] = axisPID[ROLL] + flapperons[0];       // Wing 1
         servo[4] = axisPID[ROLL] + flapperons[1];       // Wing 2
-        servo[5] = (servoDirection(5, 1) * axisPID[PITCH]) + (servoDirection(5, 2) * axisPID[YAW]);      // Rudder
-        servo[6] = (servoDirection(6, 1) * axisPID[PITCH]) + (servoDirection(6, 2) * axisPID[YAW]);      // Elevator
+        servo[5] = (servoDirection(5, 1) * axisPID[PITCH]) + (servoDirection(5, 2) * axisPID[YAW]);      // Ruddervators
+        servo[6] = (servoDirection(6, 1) * axisPID[PITCH]) + (servoDirection(6, 2) * axisPID[YAW]);      // Ruddervators
     }
 }
     for (i = 3; i < 7; i++) {
