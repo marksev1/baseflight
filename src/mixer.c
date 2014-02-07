@@ -363,32 +363,32 @@ static void airplaneMixer(void)
     }
 
     if (mcfg.mixerConfiguration == MULTITYPE_AIRPLANE) {
-    if (f.PASSTHRU_MODE) {   // Direct passthru from RX
-        servo[3] = rcCommand[ROLL] + flapperons[0];     // Wing 1
-        servo[4] = rcCommand[ROLL] + flapperons[1];     // Wing 2
-        servo[5] = rcCommand[YAW];                      // Rudder
-        servo[6] = rcCommand[PITCH];                    // Elevator
+        if (f.PASSTHRU_MODE) {   // Direct passthru from RX
+            servo[3] = rcCommand[ROLL] + flapperons[0];     // Wing 1
+            servo[4] = rcCommand[ROLL] + flapperons[1];     // Wing 2
+            servo[5] = rcCommand[YAW];                      // Rudder
+            servo[6] = rcCommand[PITCH];                    // Elevator
+        } else {
+            // Assisted modes (gyro only or gyro+acc according to AUX configuration in Gui
+            servo[3] = axisPID[ROLL] + flapperons[0];       // Wing 1
+            servo[4] = axisPID[ROLL] + flapperons[1];       // Wing 2
+            servo[5] = axisPID[YAW];                        // Rudder
+            servo[6] = axisPID[PITCH];                      // Elevator
+        }
     } else {
-        // Assisted modes (gyro only or gyro+acc according to AUX configuration in Gui
-        servo[3] = axisPID[ROLL] + flapperons[0];       // Wing 1
-        servo[4] = axisPID[ROLL] + flapperons[1];       // Wing 2
-        servo[5] = axisPID[YAW];                        // Rudder
-        servo[6] = axisPID[PITCH];                      // Elevator
+         if (f.PASSTHRU_MODE) {   // Direct passthru from RX, for vtailplane
+            servo[3] = rcCommand[ROLL] + flapperons[0];     // Wing 1
+            servo[4] = rcCommand[ROLL] + flapperons[1];     // Wing 2
+            servo[5] = (servoDirection(5, 1) * rcCommand[PITCH]) + (servoDirection(5, 2) * rcCommand[YAW]);   // Ruddervators
+            servo[6] = (servoDirection(6, 1) * rcCommand[PITCH]) + (servoDirection(6, 2) * rcCommand[YAW]);   // Ruddervators
+        } else {
+            // Assisted modes (gyro only or gyro+acc according to AUX configuration in Gui, for vtailplane
+            servo[3] = axisPID[ROLL] + flapperons[0];       // Wing 1
+            servo[4] = axisPID[ROLL] + flapperons[1];       // Wing 2
+            servo[5] = (servoDirection(5, 1) * axisPID[PITCH]) + (servoDirection(5, 2) * axisPID[YAW]);      // Ruddervators
+            servo[6] = (servoDirection(6, 1) * axisPID[PITCH]) + (servoDirection(6, 2) * axisPID[YAW]);      // Ruddervators
+        }
     }
-} else {
-    if (f.PASSTHRU_MODE) {   // Direct passthru from RX, for vtailplane
-        servo[3] = rcCommand[ROLL] + flapperons[0];     // Wing 1
-        servo[4] = rcCommand[ROLL] + flapperons[1];     // Wing 2
-        servo[5] = (servoDirection(5, 1) * rcCommand[PITCH]) + (servoDirection(5, 2) * rcCommand[YAW]);   // Ruddervators
-        servo[6] = (servoDirection(6, 1) * rcCommand[PITCH]) + (servoDirection(6, 2) * rcCommand[YAW]);   // Ruddervators
-    } else {
-        // Assisted modes (gyro only or gyro+acc according to AUX configuration in Gui, for vtailplane
-        servo[3] = axisPID[ROLL] + flapperons[0];       // Wing 1
-        servo[4] = axisPID[ROLL] + flapperons[1];       // Wing 2
-        servo[5] = (servoDirection(5, 1) * axisPID[PITCH]) + (servoDirection(5, 2) * axisPID[YAW]);      // Ruddervators
-        servo[6] = (servoDirection(6, 1) * axisPID[PITCH]) + (servoDirection(6, 2) * axisPID[YAW]);      // Ruddervators
-    }
-}
     for (i = 3; i < 7; i++) {
         servo[i] = ((int32_t)cfg.servoConf[i].rate * servo[i]) / 100L; // servo rates
         servo[i] += servoMiddle(i);
